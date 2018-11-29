@@ -1,5 +1,26 @@
 <html>
+<head>
+    <title>a peer to peer chat room!</title>
+</head>
+
+
+<body>
 <h1>
     welcome to home page!
+    <h2>请查阅您的最新消息：</h2>
+    {% for i in messages %}
+    <p>{{i.title}}</p>
+    内容：{{i.content}} 时间：{{i.timestamp}}
+    {% else %}
+    <p>暂无新的消息！</p>
+    {% endfor %}
 </h1>
+
+<form action="{{url_for('new_message')}}", method='post'>
+    <input type="text",name="messgae">
+    <input type="submit" value="发送">
+</form>
+
+
+</body>
 </html>

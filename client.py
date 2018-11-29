@@ -1,31 +1,54 @@
 # coding: utf-8
 from flask import Flask
-from flask import request, jsonify, g, render_template
+from flask import request, jsonify, g, render_template,redirect,url_for
 
 
 app = Flask(__name__)
 
 
-@app.route('/chat/')
-def health_check():
-    return jsonify({'code':200, 'data':'welcome'})
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 
-@app.route('/private/', methods=['POST','GET'])
-def get_rsa_url():
-    if request.form.get('kw') == '110':
-        return jsonify({'code': 200, 'data': '123456789'})
+@app.route('/check/', methods=['POST','GET'])
+def check():
+    if request.form.get('kw') == '@123456':
+        return render_template('recheck.html')
     else:
-        return jsonify({'code': 200, 'data':'www.baidu.com'})
+        return redirect(url_for('index'))
+
+
+@app.route('/recheck/',methods=['POST'])
+def recheck():
+    if request.form.get('ps') == 'hi':
+        return redirect('/chatroom/123')
+    else:
+        return redirect(url_for('check'))
 
 
 @app.route('/chatroom/<token>', methods=['GET'])
 def chat(token):
     print(token)
     if token == '123':
-        return render_template('./chat.html')
+
+        messages = [{'title':'lilei', 'content':'hello world', 'timestamp':'2018-10-12 12:25'}]
+
+        return render_template('chat.html',messages=messages)
     else:
-        return render_template('./error.html')
+        return render_template('error.html')
+
+
+@app.route('/new_message/', methods=['GET', 'POST'])
+def new_message():
+    print(request.method)
+    if request.method == 'GET':
+        return jsonify({'code':200,'data':'这是新消息'})
+    elif request.method == 'POST':
+        message = request.form.get('message')
+        print(message)
+        return redirect('/chatroom/123')
+
 
 
 if __name__ == '__main__':
