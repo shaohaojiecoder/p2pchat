@@ -1,7 +1,8 @@
 # coding: utf-8
+import time
 from flask import Flask
 from flask import request, jsonify, g, render_template,redirect,url_for
-
+from config import *
 
 app = Flask(__name__)
 
@@ -32,7 +33,7 @@ def chat(token):
     print(token)
     if token == '123':
 
-        messages = [{'title':'lilei', 'content':'hello world', 'timestamp':'2018-10-12 12:25'}]
+        messages = [{'title': 'lilei', 'content':'hello world', 'timestamp':'2018-10-12 12:25'}]
 
         return render_template('chat.html',messages=messages)
     else:
@@ -46,6 +47,7 @@ def new_message():
         return jsonify({'code':200,'data':'这是新消息'})
     elif request.method == 'POST':
         message = request.form.get('message')
+        timestamp = time.time()
         print(message)
         return redirect('/chatroom/123')
 
