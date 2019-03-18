@@ -17,15 +17,26 @@ a peer to peer chatroom
 主要数据结构：
 
         User{
-            
+            name                string
+            id                  string
+            conn                *wsconn
+            currentRoom         *Room
             }
             
             Room{
-            
-            
+            name                string
+            message             chan Message
+            Users               map[User.id]*User
+            UserNum             int
             }
             
             Message{
-            
+            sender      *User
+            room        *Room
+            datetime    datetime
+            content     string
             }
+            
+            UserManager{}
+            RoomManager{}
         
